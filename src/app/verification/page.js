@@ -110,7 +110,7 @@ const Page = () => {
         </form>
 
         <p className="mt-4 text-center text-gray-600">
-          Didn't receive the OTP?{" "}
+          {"Didn't receive the OTP?"}
           <Link href="/resend-otp" className="text-blue-500 hover:underline">
             Resend OTP
           </Link>
