@@ -17,11 +17,14 @@ export const authOptions = {
       },
       async authorize(credentials) {
         // Backend API call to Express for authentication
-        const res = await fetch(`http://localhost:8000/api/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(credentials),
-        });
+        const res = await fetch(
+          `https://smmbackend-tgnc.onrender.com/api/login`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(credentials),
+          }
+        );
 
         const user = await res.json();
 

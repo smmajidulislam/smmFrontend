@@ -2,7 +2,7 @@ import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
 export const config = {
-  matcher: ["/about"], //login user acees
+  matcher: ["/about", "/dashbord"], //login user acees
 };
 
 export default withAuth(

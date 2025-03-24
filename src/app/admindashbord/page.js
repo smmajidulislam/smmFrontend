@@ -111,16 +111,21 @@ export default function AdminDashboard() {
   };
   const handleDeleteBalance = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/rejectBlance", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ user_id: "67d5ae9111f11e4ea90aaa37" }),
-      });
+      const response = await fetch(
+        "https://smmbackend-tgnc.onrender.com/api/rejectBlance",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ user_id: "67d5ae9111f11e4ea90aaa37" }),
+        }
+      );
       const fetchBalanceRequests = async () => {
         try {
-          const response = await fetch("http://localhost:8000/api/blanceShow");
+          const response = await fetch(
+            "https://smmbackend-tgnc.onrender.com/api/blanceShow"
+          );
           const data = await response.json();
 
           if (Array.isArray(data)) {
