@@ -8,7 +8,6 @@ export default function OrderPage() {
   const [getServiceName, setServiceName] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [link, setLink] = useState("");
-  const [serviceId, setServiceId] = useState("");
   const [message, setMessage] = useState("");
   const [detaa, setdetaa] = useState("");
 
@@ -16,33 +15,25 @@ export default function OrderPage() {
   const userId = session?.user?._id;
   const handleOrderSubmit = async (e) => {
     e.preventDefault();
-    const getServiceId = category.map((item) => {
-      item.names.map((n) => {
-        console.log("detaa:", detaa);
-        console.log("n.name:", n.name);
-
-        if (n.name.trim().toLowerCase() === detaa.trim().toLowerCase()) {
-          console.log("Matched service:", n.service);
-          setServiceId(n.service);
-        }
-      });
-    });
 
     const orderData = {
       user_id: userId,
       quantity,
-      service_id: serviceId,
+      service_id: detaa,
       link,
     };
 
     try {
-      const response = await fetch("http://localhost:8000/api/orderPlacement", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderData),
-      });
+      const response = await fetch(
+        "https://smmbackend-tgnc.onrender.com/api/orderPlacement",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderData),
+        }
+      );
 
       const result = await response.json();
       if (response.ok) {
@@ -54,7 +45,6 @@ export default function OrderPage() {
       setMessage("এপিআই ত্রুটি, দয়া করে পরে চেষ্টা করুন।");
     }
   };
-  console.log(category);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 dark:bg-gray-900 dark:text-white">
@@ -95,7 +85,7 @@ export default function OrderPage() {
             className="w-full p-3 mt-2 border rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600"
             disabled={!getServiceName}
             onChange={(e) => {
-              setdetaa(e.target.value);
+              setdetaa(e.target.value); // এখানে _id সেট করা হচ্ছে
             }}
             required
           >
@@ -105,7 +95,7 @@ export default function OrderPage() {
             {category.map((item) => {
               if (item.category === getServiceName) {
                 return item.names.map((n, index) => (
-                  <option key={index} value={n.name}>
+                  <option key={index} value={n.service}>
                     {n.name}
                   </option>
                 ));
@@ -114,6 +104,7 @@ export default function OrderPage() {
             })}
           </select>
         </div>
+
         {/* Link part*/}
         <div>
           <label htmlFor="link" className="block text-lg font-medium">

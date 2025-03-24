@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function UserDashboard() {
   const [balance, setBalance] = useState(0);
@@ -8,20 +9,25 @@ export default function UserDashboard() {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const userId = "67d5ae9111f11e4ea90aaa37"; // আপনার নির্দিষ্ট user_id
+  const { data } = useSession();
+
+  const userId = data?.user?._id; // আপনার নির্দিষ্ট user_id
 
   // ✅ Balance Fetch Function
   const fetchBalance = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/singleBlance", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: userId }),
-      });
+      const response = await fetch(
+        "https://smmbackend-tgnc.onrender.com/api/singleBlance",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id: userId }),
+        }
+      );
 
-      const data = await response.json();
-      if (data?.totalBlance) {
-        setBalance(data.totalBlance);
+      const dataa = await response.json();
+      if (dataa?.totalBlance) {
+        setBalance(dataa.totalBlance);
       }
     } catch (error) {
       console.error("Error fetching balance:", error);
@@ -32,7 +38,7 @@ export default function UserDashboard() {
   const fetchOrders = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8000/api/orderShowingUser",
+        "https://smmbackend-tgnc.onrender.com/api/orderShowingUser",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -40,9 +46,9 @@ export default function UserDashboard() {
         }
       );
 
-      const data = await response.json();
-      setOrders(data);
-      setOrderCount(data.length);
+      const dataa = await response.json();
+      setOrders(dataa);
+      setOrderCount(dataa.length);
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
@@ -63,11 +69,14 @@ export default function UserDashboard() {
 
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:8000/api/blance", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: userId, amount: addAmount }),
-      });
+      const response = await fetch(
+        "https://smmbackend-tgnc.onrender.com/api/blance",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id: userId, amount: addAmount }),
+        }
+      );
 
       if (response.ok) {
         alert("Balance added successfully!");
