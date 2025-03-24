@@ -36,10 +36,10 @@ export default function OrderPage() {
           body: JSON.stringify(orderData),
         }
       );
-      router.push("/dashbord");
       const result = await response.json();
       if (response.ok) {
         setMessage(result.message);
+        router.push("/dashbord");
       } else {
         setMessage(result.message);
       }
@@ -47,7 +47,6 @@ export default function OrderPage() {
       setMessage("এপিআই ত্রুটি, দয়া করে পরে চেষ্টা করুন।");
     }
   };
-
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 dark:bg-gray-900 dark:text-white">
       <h3 className="text-2xl md:text-4xl font-bold text-center mb-8 text-white">
@@ -122,21 +121,15 @@ export default function OrderPage() {
           />
         </div>
         {/* Service price based on Category */}
-        {category.map((item) => {
-          if (item.category === getServiceName) {
-            return item.names.map((n, index) => {
-              if (n.name === detaa) {
-                return (
-                  <div key={index} className="text-lg font-medium">
-                    Service Price: {n.rate}
-                  </div>
-                );
-              }
-              return null;
-            });
-          }
-          return null;
-        })}
+        {category.map((item) =>
+          item.names.map((n, index) =>
+            n.service === detaa ? (
+              <div key={index} className="text-lg font-medium">
+                Service Price: {n.rate}
+              </div>
+            ) : null
+          )
+        )}
 
         {/* Quantity */}
         <div>
