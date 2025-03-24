@@ -2,6 +2,7 @@
 import { useState } from "react";
 import useAuth from "../hooks/useAuth";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function OrderPage() {
   const { category } = useAuth("/api/category");
@@ -10,6 +11,7 @@ export default function OrderPage() {
   const [link, setLink] = useState("");
   const [message, setMessage] = useState("");
   const [detaa, setdetaa] = useState("");
+  const router = useRouter();
 
   const { data: session } = useSession();
   const userId = session?.user?._id;
@@ -34,7 +36,7 @@ export default function OrderPage() {
           body: JSON.stringify(orderData),
         }
       );
-
+      router.push("/dashbord");
       const result = await response.json();
       if (response.ok) {
         setMessage(result.message);
